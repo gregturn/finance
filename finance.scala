@@ -42,9 +42,12 @@ object Main extends App {
   println("Geometric mean = " + gMean(snp) + "%" )
   println("Actual total growth factor = " + actualAbsGrowth(snp))
   println
-  println("EIUL performance = " + eiul(snp, EiulLimits(0.0, 15.0)))
-  println("EIUL arithmetic performance = " + aMean(eiul(snp, EiulLimits(0.0, 15.0))) + "%")
-  println("EIUL geometric performance = " + gMean(eiul(snp, EiulLimits(0.0, 15.0))) + "%")
-  println("Actual EIUL total growth factor = " + actualAbsGrowth(eiul(snp, EiulLimits(0.0, 15.0))))
+
+  val eiulData = eiul(snp, EiulLimits(0.0, 15.0))
+
+  println("EIUL performance = " + eiulData)
+  println("EIUL arithmetic performance = " + aMean(eiulData) + "%")
+  println("EIUL geometric performance = " + gMean(eiulData) + "%")
+  println("Actual EIUL total growth factor = " + actualAbsGrowth(eiulData))
 
 }
