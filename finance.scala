@@ -34,7 +34,10 @@ object Main extends App {
   case class EiulLimits(lower:Double, upper:Double)
 
   def eiul(xs: Seq[(Int, Double)], limits:EiulLimits): Seq[(Int, Double)] = {
-    xs.map(item => (item._1, if (item._2 < limits.lower) limits.lower else if (item._2 > limits.upper) limits.upper else item._2))
+    xs.map(item => (item._1, 
+                    if (item._2 < limits.lower) limits.lower 
+                    else if (item._2 > limits.upper) limits.upper 
+                         else item._2))
   }
 
   println("S&P 500 performance = " + snp)
@@ -49,5 +52,4 @@ object Main extends App {
   println("EIUL arithmetic performance = " + aMean(eiulData) + "%")
   println("EIUL geometric performance = " + gMean(eiulData) + "%")
   println("Actual EIUL total growth factor = " + actualAbsGrowth(eiulData))
-
 }
