@@ -47,13 +47,17 @@ object Main extends App {
     relChange(math.pow(actualAbsGrowth(xs), 1.0/xs.size))
   }
 
-  case class EiulLimits(lower:Double, upper:Double)
+  /** apply allows it to sort the right value into the middle, and then pick it 
+   *  For example, EiulLimits(0.0, 15.0)(4.0)  would become List(0.0, 4.0, 15.0), with 4.0 being in the middle
+   *               EiulLimits(0.0, 15.0)(-2.4  would become List(-2.4, 0.0, 15.0), with 0.0 being in the middle
+   *               EiulLimits(0.0, 15.0)(22.5) would become List(0.0, 15.0, 22.5), with 15.0 being in the middle
+   */
+  case class EiulLimits(lower:Double, upper:Double) {
+    apply(x: Double) = List(x, lower, upper).sorted.apply(1)
+  }
 
-  def eiul(xs: Seq[(Int, Double)], limits:EiulLimits): Seq[(Int, Double)] = {
-    xs.map(item => (item._1, 
-                    if (item._2 < limits.lower) limits.lower 
-                    else if (item._2 > limits.upper) limits.upper 
-                         else item._2))
+  def eiul(xs: Seq[(Int, Double)], limits: EiulLimits): Seq[(Int, Double)] = {
+    xs.map { case(year, relChange) => (year, limits(relChange))
   }
 
   println("S&P 500 performance = " + snp)
