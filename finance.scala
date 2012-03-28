@@ -61,7 +61,22 @@ object Main extends App {
   }
 
   def series(xs: Seq[(Int, Double)], years: Int) = {
-    xs.sliding(years).map(sublist => (sublist.take(1), sublist.takeRight(1))).toList
+    xs.sliding(years).map(sublist => 
+      (sublist(0)._1, sublist.takeRight(1)(0)._1, aMean(sublist), gMean(sublist))
+    ).toList
+  }
+
+  def stddev(xs: Seq[Double]): Double = {
+    val mean = xs.sum/xs.size
+    val squareSum = xs.foldLeft(0.0)((subtotal, item) => subtotal + math.pow(item - mean, 2))
+    math.sqrt(squareSum/xs.size)
+  }
+
+  def stats(xs: Seq[(Int, Int, Double, Double)]) = {
+    val aMeans = xs.map(_._3)
+    val gMeans = xs.map(_._4)
+    Map("average geom mean" -> round(gMeans.sum/xs.size, 2), "min geom mean" -> round(gMeans.min, 2), "max geom mean" -> round(gMeans.max, 2),
+        "stddev" -> stddev(gMeans))
   }
 
   println("S&P 500 performance = " + snp)
@@ -76,6 +91,24 @@ object Main extends App {
   println("EIUL arithmetic performance = " + aMean(eiulData) + "%")
   println("EIUL geometric performance = " + gMean(eiulData) + "%")
   println("Actual EIUL total growth factor = " + actualAbsGrowth(eiulData))
+  println
 
-  //series(snp, 10).foreach{ println(_) }
+  for {
+    window <- List(10, 15, 20, 25, 30)
+  } {
+    val snpStats = stats(series(snp, window))
+    val eiulStats = stats(series(eiulData, window))
+    println(window + "-year stats")
+    for {
+      stats <- List(("S&P 500", snpStats), ("EIUL", eiulStats))
+    } {
+      stats match {
+        case (desc, stats) => println(desc + " stats: " + 
+                                      " Avg geom mean = " + stats("average geom mean") + 
+                                      " (" + stats("min geom mean") + ".." + stats("max geom mean") + ") 68% chance +/- " + 
+                                      stats("stddev"))
+      }
+    }
+    println
+  }
 }
