@@ -53,11 +53,15 @@ object Main extends App {
    *               EiulLimits(0.0, 15.0)(22.5) would become List(0.0, 15.0, 22.5), with 15.0 being in the middle
    */
   case class EiulLimits(lower:Double, upper:Double) {
-    apply(x: Double) = List(x, lower, upper).sorted.apply(1)
+    def apply(x: Double) = List(x, lower, upper).sorted.apply(1)
   }
 
   def eiul(xs: Seq[(Int, Double)], limits: EiulLimits): Seq[(Int, Double)] = {
-    xs.map { case(year, relChange) => (year, limits(relChange))
+    xs.map { case(year, relChange) => (year, limits(relChange)) }
+  }
+
+  def series(xs: Seq[(Int, Double)], years: Int) = {
+    xs.sliding(years).map(sublist => (sublist.take(1), sublist.takeRight(1))).toList
   }
 
   println("S&P 500 performance = " + snp)
@@ -72,4 +76,6 @@ object Main extends App {
   println("EIUL arithmetic performance = " + aMean(eiulData) + "%")
   println("EIUL geometric performance = " + gMean(eiulData) + "%")
   println("Actual EIUL total growth factor = " + actualAbsGrowth(eiulData))
+
+  //series(snp, 10).foreach{ println(_) }
 }
