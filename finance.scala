@@ -93,6 +93,12 @@ object Main extends App {
   println("Actual EIUL total growth factor = " + actualAbsGrowth(eiulData))
   println
 
+  println("""
+  This is where every 10, 15, 20, etc. year interval in all the data is evaluated and then averaged together.
+  The min and max performance of each interval is displayed, and the 1st stddev is shown. There is a 68%
+  that actual performance is within 1 stddev of the average.
+  """)
+
   List(10, 15, 20, 25, 30).foreach {interval =>
     val snpStats = stats(series(snp, interval))
     val eiulStats = stats(series(eiulData, interval))
