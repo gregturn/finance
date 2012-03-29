@@ -93,20 +93,16 @@ object Main extends App {
   println("Actual EIUL total growth factor = " + actualAbsGrowth(eiulData))
   println
 
-  for {
-    window <- List(10, 15, 20, 25, 30)
-  } {
-    val snpStats = stats(series(snp, window))
-    val eiulStats = stats(series(eiulData, window))
-    println(window + "-year stats")
-    for {
-      stats <- List(("S&P 500", snpStats), ("EIUL", eiulStats))
-    } {
+  List(10, 15, 20, 25, 30).foreach {interval =>
+    val snpStats = stats(series(snp, interval))
+    val eiulStats = stats(series(eiulData, interval))
+    println(interval + "-year stats")
+    println("==========================")
+    List(("S&P 500", snpStats), ("EIUL", eiulStats)).foreach {stats =>
       stats match {
-        case (desc, stats) => println(desc + " stats: " + 
-                                      " Avg geom mean = " + stats("average geom mean") + 
-                                      " (" + stats("min geom mean") + ".." + stats("max geom mean") + ") 68% chance +/- " + 
-                                      stats("stddev"))
+        case (desc, stats) => println("%s stats:\t Avg geom mean = %.2f (%.2f..%.2f)\t68%% chance between %.2f and %.2f".format(
+                                      desc, stats("average geom mean"), stats("min geom mean"), stats("max geom mean"), 
+                                      stats("average geom mean")-stats("stddev"), stats("average geom mean")+stats("stddev")))
       }
     }
     println
