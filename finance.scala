@@ -72,17 +72,22 @@ object Main extends App {
     math.sqrt(squareSum/xs.size)
   }
 
-  def calc_stats(xs: Seq[(Int, Int, Double, Double, Seq[(Int, Double)])]): Map[String, Any] = {
+  /* Need a better container for the statistical data than a plain Map */
+  case class StatsData(val avgGeomMean:Double, val minGeomMean: Double, val maxGeomMean: Double, val stddev: Double,
+                       val minList: (Int, Int, Double, Double, Seq[(Int, Double)]), 
+                       val maxList: (Int, Int, Double, Double, Seq[(Int, Double)]))
+
+  def calc_stats(xs: Seq[(Int, Int, Double, Double, Seq[(Int, Double)])]) = {
     val aMeans = xs.map(_._3)
     val gMeans = xs.map(_._4)
     val minList = xs.tail.foldLeft(xs.head)((min, item) => if (gMean(item._5) < gMean(min._5)) item else min)
     val maxList = xs.tail.foldLeft(xs.head)((max, item) => if (gMean(item._5) > gMean(max._5)) item else max)
-    Map("average geom mean" -> round(gMeans.sum/xs.size, 2), 
-        "min geom mean" -> round(gMeans.min, 2), 
-        "max geom mean" -> round(gMeans.max, 2),
-        "stddev" -> stddev(gMeans),
-        "min list" -> minList,
-        "max list" -> maxList)
+    StatsData(round(gMeans.sum/xs.size, 2), 
+        round(gMeans.min, 2), 
+        round(gMeans.max, 2),
+        stddev(gMeans),
+        minList,
+        maxList)
   }
 
   println("S&P 500 performance = " + snp)
@@ -114,14 +119,14 @@ object Main extends App {
       _ match {
         case (desc, stats) => println("%s stats:\t Avg geom mean = %.2f (%.2f..%.2f)\t68%% chance between %.2f and %.2f".format(
                                       desc, 
-                                      stats("average geom mean"), 
-                                      stats("min geom mean"), 
-                                      stats("max geom mean"), 
-                                      stats("average geom mean").asInstanceOf[Double] - stats("stddev").asInstanceOf[Double], 
-                                      stats("average geom mean").asInstanceOf[Double] + stats("stddev").asInstanceOf[Double]))
+                                      stats.avgGeomMean, 
+                                      stats.minGeomMean, 
+                                      stats.maxGeomMean, 
+                                      stats.avgGeomMean - stats.stddev, 
+                                      stats.avgGeomMean + stats.stddev))
                                println("Windows displayed are (first year, last year, arithmetic mean, geom mean, and the original data)")
-                               println("Min window is " + stats("min list"))
-                               println("Max window is " + stats("max list"))
+                               println("Min window is " + stats.minList)
+                               println("Max window is " + stats.maxList)
                                println()
       }
     }
