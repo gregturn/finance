@@ -75,7 +75,9 @@ object Main extends App {
   def stats(xs: Seq[(Int, Int, Double, Double)]) = {
     val aMeans = xs.map(_._3)
     val gMeans = xs.map(_._4)
-    Map("average geom mean" -> round(gMeans.sum/xs.size, 2), "min geom mean" -> round(gMeans.min, 2), "max geom mean" -> round(gMeans.max, 2),
+    Map("average geom mean" -> round(gMeans.sum/xs.size, 2), 
+        "min geom mean" -> round(gMeans.min, 2), 
+        "max geom mean" -> round(gMeans.max, 2),
         "stddev" -> stddev(gMeans))
   }
 
@@ -107,8 +109,12 @@ object Main extends App {
     List(("S&P 500", snpStats), ("EIUL", eiulStats)).foreach {stats =>
       stats match {
         case (desc, stats) => println("%s stats:\t Avg geom mean = %.2f (%.2f..%.2f)\t68%% chance between %.2f and %.2f".format(
-                                      desc, stats("average geom mean"), stats("min geom mean"), stats("max geom mean"), 
-                                      stats("average geom mean")-stats("stddev"), stats("average geom mean")+stats("stddev")))
+                                      desc, 
+                                      stats("average geom mean"), 
+                                      stats("min geom mean"), 
+                                      stats("max geom mean"), 
+                                      stats("average geom mean")-stats("stddev"), 
+                                      stats("average geom mean")+stats("stddev")))
       }
     }
     println
