@@ -2,8 +2,8 @@ This project contains code used to analyze financial data.
 
 To build and run the finance.scala app:
 
-1) Install scala (brew install scall works)
-2) scalac finance.scala && scala Main  (this ensures that compile errors break out and don't try to run anything)
+1) Install scala (brew install scala works)
+2) scalac *.scala && scala Main  (this ensures that compile errors break out and don't try to run anything)
 
 This will show you a demo of S&P 500 performance, comparing arithmetic mean and geometric mean, and then compare it to an EIUL.
 
