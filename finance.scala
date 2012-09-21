@@ -14,13 +14,11 @@
    limitations under the License.
 */
 
-package com.turnquistwealthbuilders
-
 import SP500._
 import FinanceMath._
 
 /* Assume all percents are given in "%" format, while absolutes are in pure decimal format */
-object Main extends App {
+object Eiul extends App {
 
   /** apply allows it to sort the right value into the middle, and then pick it 
    *  For example, EiulLimits(0.0, 15.0)(4.0)  would become List(0.0, 4.0, 15.0), with 4.0 being in the middle
