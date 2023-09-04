@@ -3,9 +3,7 @@ package com.greglturnquist.finance;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
+//@SpringBootApplication
 public class FinanceApplication {
 
 	record Performance(int year, double performance) {
@@ -197,7 +195,7 @@ public class FinanceApplication {
 		System.out.println(String.format("S&P 500 Actual total growth factor = %.1fx", actualAbsGrowth(snp)));
 		System.out.println();
 
-		var iulData = iul(snp, new IulCaps(0.0, 16.0));
+		var iulData = iul(snp, new IulCaps(0.0, 25.0));
 
 		System.out.println("IUL performance = " + iulData);
 		System.out.println(String.format("IUL arithmetic performance (%d to %d) = %.1f%%", iulData.get(0).year,
@@ -237,8 +235,8 @@ public class FinanceApplication {
 
 			List.of(new DataSeries("S&P 500", snp500Stats), new DataSeries("IUL", iulStats)).forEach(dataSeries -> {
 
-				System.out
-						.println(String.format("%s stats:\t Avg geom mean = %.1f%% (%.1f%%..%.1f%%)\t68%% chance between %.1f%% and %.1f%%", //
+				System.out.println(
+						String.format("%s stats:\t Avg geom mean = %.1f%% (%.1f%%..%.1f%%)\t68%% chance between %.1f%% and %.1f%%", //
 								dataSeries.desc, //
 								dataSeries.stats.avgGeomMean, //
 								dataSeries.stats.minGeomMean, //
