@@ -195,7 +195,7 @@ public class FinanceApplication {
 		System.out.println(String.format("S&P 500 Actual total growth factor = %.1fx", actualAbsGrowth(snp)));
 		System.out.println();
 
-		var iulData = iul(snp, new IulCaps(0.0, 25.0));
+		var iulData = iul(snp, new IulCaps(0.0, 16.0));
 
 		System.out.println("IUL performance = " + iulData);
 		System.out.println(String.format("IUL arithmetic performance (%d to %d) = %.1f%%", iulData.get(0).year,
